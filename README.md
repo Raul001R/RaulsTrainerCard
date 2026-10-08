@@ -1,36 +1,78 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Raul's Trainer Card
 
-## Getting Started
+A Pokémon trainer card themed portfolio page. It introduces me, shows my projects as Pokédex entries and explains why I joined Knight Hacks.
 
-First, run the development server:
+**Live:** _add your Vercel URL here_
+
+I first built this page as my application to the Knight Hacks Dev Team inside their `forge` monorepo. I later pulled it out into this standalone app so it can be hosted on its own.
+
+## Features
+
+- **Intro video** with a poster image and a 15 second fallback so the page still loads if the video stalls
+- **Reduced motion support** that reads the system setting with `useSyncExternalStore` and skips the intro animation
+- **Trainer card** built from a data array instead of hardcoded markup
+- **Pokédex section** that renders each project from a list with `.map()`
+- **Pixel font** and a dark theme built on design tokens instead of hardcoded colors
+
+## Tech Stack
+
+- [Next.js](https://nextjs.org) 16 with the App Router
+- React 19 and TypeScript
+- Tailwind CSS v4
+- [shadcn/ui](https://ui.shadcn.com) components (Badge, Button, Card) built on Radix
+- Radix Icons
+- Deployed on [Vercel](https://vercel.com)
+
+## Moving It Out of Forge
+
+The page only imported three components from forge. Getting it to run on its own took more than that. These are the hidden dependencies I had to find and replace:
+
+| Dependency | In forge | In this app |
+|---|---|---|
+| UI components | `@forge/ui` shared package | Copied into `components/ui/` |
+| `cn()` class helper | `@forge/ui` | `lib/utils.ts` |
+| `Slot` for `asChild` buttons | Installed in forge | Added `@radix-ui/react-slot` |
+| Dark mode | `ThemeProvider` with `attribute="class"` | `className="dark"` on `<html>` |
+| Color tokens | Bare HSL values wrapped by `tailwind.config.ts` | Full `hsl()` values read by `@theme` |
+| GitHub and LinkedIn icons | `lucide-react` 0.x | `@radix-ui/react-icons` since Lucide 1.x removed brand icons |
+
+Nothing errored when these were wrong. The page just looked different. Tracing each one taught me more about how the app fits together than building the page did.
+
+## Running Locally
+
+You need Node.js 20 or newer and pnpm.
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
+pnpm install
 pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Then open [http://localhost:3000](http://localhost:3000).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+To check a production build:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+pnpm lint
+pnpm build
+```
 
-## Learn More
+## Project Structure
 
-To learn more about Next.js, take a look at the following resources:
+```
+app/
+  layout.tsx      Root layout: html, body, metadata and the dark class
+  page.tsx        The trainer card page
+  globals.css     Tailwind setup and color tokens
+components/ui/    Badge, Button and Card
+lib/utils.ts      cn() class name helper
+public/           Video, images and the pixel font
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Credits
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- UI components and color tokens adapted from [Knight Hacks forge](https://github.com/KnightHacks/forge)
+- Pokémon is a trademark of Nintendo, Creatures and Game Freak. This is a personal fan project and is not affiliated with them.
 
-## Deploy on Vercel
+## Author
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Raul Rodriguez · [GitHub](https://github.com/Raul001R)
