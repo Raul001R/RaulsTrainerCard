@@ -2,7 +2,7 @@
 
 A Pokémon trainer card themed portfolio page. It introduces me, shows my projects as Pokédex entries and explains why I joined Knight Hacks.
 
-**Live:** _add your Vercel URL here_
+**Live:** (https://rauls-trainer-card.vercel.app/)
 
 I first built this page as my application to the Knight Hacks Dev Team inside their `forge` monorepo. I later pulled it out into this standalone app so it can be hosted on its own.
 
